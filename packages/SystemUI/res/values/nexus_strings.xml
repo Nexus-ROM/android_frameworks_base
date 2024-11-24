@@ -5,4 +5,8 @@
 -->
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
 
+    <!-- Refresh Rate Tile -->
+    <string name="refresh_rate_tile_label">Refresh rate</string>
+    <string name="auto_mode_label">Auto</string>
+
 </resources>
