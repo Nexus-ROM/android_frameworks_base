@@ -174,6 +174,11 @@
     <!-- Total time for the rotation background color transition -->
     <integer name="config_screen_rotation_color_transition">200</integer>
 
+    <!-- Whether to preserve locked user rotation across screen off/on and keyguard.
+     This fixes the issue where tablets reset to portrait after unlock even when
+     held in landscape. Set to true to enable this behavior. -->
+    <bool name="config_preserveLockedRotationAcrossUnlock">false</bool>
+
     <!-- The duration (in milliseconds) of the tooltip show/hide animations. -->
     <integer name="config_tooltipAnimTime">150</integer>
 

@@ -108,6 +108,7 @@ public class DisplayRotation {
     private final DisplayPolicy mDisplayPolicy;
     private final DisplayWindowSettings mDisplayWindowSettings;
     private final Context mContext;
+    private final boolean mPreserveLockedRotationAcrossUnlock;
     private final Object mLock;
     @Nullable
     private final DisplayRotationImmersiveAppCompatPolicy mCompatPolicyForImmersiveApps;
@@ -247,6 +248,8 @@ public class DisplayRotation {
         mDisplayPolicy = displayPolicy;
         mDisplayWindowSettings = displayWindowSettings;
         mContext = context;
+        mPreserveLockedRotationAcrossUnlock = mContext.getResources().getBoolean(
+                com.android.internal.R.bool.config_preserveLockedRotationAcrossUnlock);
         mLock = lock;
         mDeviceStateController = deviceStateController;
         isDefaultDisplay = displayContent.isDefaultDisplay;
@@ -552,6 +555,14 @@ public class DisplayRotation {
         final int lastOrientation = mLastOrientation;
         @Surface.Rotation
         int rotation = rotationForOrientation(lastOrientation, oldRotation);
+        // Preserve locked user rotation across screen off/on and keyguard
+        if (mPreserveLockedRotationAcrossUnlock
+                && mUserRotationMode == WindowManagerPolicy.USER_ROTATION_LOCKED) {
+            rotation = mUserRotation;
+            ProtoLog.v(WM_DEBUG_ORIENTATION,
+                    "Forcing locked user rotation=%s (%d)",
+                    Surface.rotationToString(rotation), rotation);
+        }
         // Use the saved rotation for tabletop mode, if set.
         if (mFoldController != null && mFoldController.shouldRevertOverriddenRotation()) {
             int prevRotation = rotation;
