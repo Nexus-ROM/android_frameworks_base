@@ -907,10 +907,13 @@ public class NotificationStackScrollLayout
 
     void initView(Context context, NotificationSwipeHelper swipeHelper,
                   NotificationStackSizeCalculator notificationStackSizeCalculator) {
-        mScroller = !SceneContainerFlag.isEnabled()
-                ? OverScrollerWrapper.wrap(new OverScroller(getContext()))
-                : new NoOpOverScroller();
-        mScroller.setFriction(0.006f);
+    if (!SceneContainerFlag.isEnabled()) {
+         OverScroller scroller = new OverScroller(getContext());
+         scroller.setFriction(0.006f);
+         mScroller = OverScrollerWrapper.wrap(scroller);
+    } else {
+         mScroller = new NoOpOverScroller();
+    }
         mSwipeHelper = swipeHelper;
         mNotificationStackSizeCalculator = notificationStackSizeCalculator;
 
